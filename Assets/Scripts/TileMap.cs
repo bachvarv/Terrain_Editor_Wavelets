@@ -6,9 +6,9 @@ using System.Collections;
 [RequireComponent(typeof(MeshRenderer))]
 public class TileMap : MonoBehaviour {
 
-	int size_x = 100;
-	int size_z = 50;
-	float tileSize = 1.0f;
+	public int size_x = 100;
+	public int size_z = 50;
+	public float tileSize = 1.0f;
 
 
 	// Use this for initialization
@@ -16,7 +16,7 @@ public class TileMap : MonoBehaviour {
 		BuildMesh ();
 	}
 
-	void BuildMesh()
+	public void BuildMesh()
 	{	
 		int numTiles = size_x * size_z;
 		int numTri = numTiles * 2;
@@ -84,6 +84,7 @@ public class TileMap : MonoBehaviour {
 		MeshCollider mc = GetComponent<MeshCollider>();
 
 		mf.mesh = m;
+		mc.sharedMesh = m;
 	}
 
 }
