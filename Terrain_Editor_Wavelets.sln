@@ -3,6 +3,8 @@ Microsoft Visual Studio Solution File, Format Version 11.00
 
 Project("{49BD5FB6-A181-A7BA-645E-B33FE307DD79}") = "Terrain_Editor_Wavelets", "Assembly-CSharp.csproj", "{E991D219-188C-A440-23C0-B98112108D87}"
 EndProject
+Project("{49BD5FB6-A181-A7BA-645E-B33FE307DD79}") = "Terrain_Editor_Wavelets", "Assembly-CSharp-Editor.csproj", "{A17DCA0A-6167-F378-2DD7-1F6236379C54}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -13,6 +15,10 @@ Global
 		{E991D219-188C-A440-23C0-B98112108D87}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E991D219-188C-A440-23C0-B98112108D87}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E991D219-188C-A440-23C0-B98112108D87}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A17DCA0A-6167-F378-2DD7-1F6236379C54}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A17DCA0A-6167-F378-2DD7-1F6236379C54}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A17DCA0A-6167-F378-2DD7-1F6236379C54}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A17DCA0A-6167-F378-2DD7-1F6236379C54}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
