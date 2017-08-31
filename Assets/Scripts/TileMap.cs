@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 [RequireComponent(typeof(MeshFilter))]
 [RequireComponent(typeof(MeshCollider))]
@@ -11,17 +12,19 @@ public class TileMap : MonoBehaviour {
 	public float tileSize = 1.0f;
 	[SerializeField]
 	public Wavelet wl;
+    Vector3 SelectedPoint;
+    int SelectedIndex;
 
 	private static int level = 0;
 
 	Vector3[] array;
-
+    List<GameObject> editPoints;
 
 	// Use this for initialization
 	void Start () {
 		array = new Vector3[0];
-		BuildMesh ();
-
+        editPoints = new List<GameObject>();
+        BuildMesh();
 	}
 
 	void Update()
@@ -30,18 +33,20 @@ public class TileMap : MonoBehaviour {
 		{
 			wl.currentLevel++;
 			wl.update ();
+            updateArray();
 
 		}
 		else if(Input.GetKey(KeyCode.LeftShift) && Input.GetKeyUp(KeyCode.D))
 		{
 			wl.currentLevel--;
 			wl.updateDownLevel ();
-
+            updateArray();
 		}
 	}
 
 	public void BuildMesh()
-	{	
+	{
+        //Debug.Log(size_x);
 		wl = new Wavelet ();
 		int numTiles = size_x * size_z;
 		int numTri = numTiles * 2;
@@ -103,6 +108,7 @@ public class TileMap : MonoBehaviour {
 		}
 
 		wl.determineLevelOfDetail ();
+        
 
 		Mesh m = new Mesh ();
 		m.vertices = vertecies;
@@ -116,8 +122,21 @@ public class TileMap : MonoBehaviour {
 		mf.mesh = m;
 		mc.sharedMesh = m;
 
-		array = new Vector3[numVert];
-		array = wl.getPoints ();
+        if (numVert % 2 != 0)
+        {
+            array = new Vector3[numVert + 1];
+            
+            wl.addDrawnPoint(vertecies[numVert - 1]);
+            wl.setMaxPoints(numVert + 1);
+            array = wl.getPoints();
+        }
+        else
+        {
+            array = new Vector3[numVert];
+            wl.setMaxPoints(numVert);
+            array = wl.getPoints();
+        }
+
 	}
 
 	void RebuildMeshWithLevel(int level)
@@ -183,11 +202,75 @@ public class TileMap : MonoBehaviour {
 
 		array = new Vector3[numVert];
 		array = wl.getPoints ();
+
 	}
 
 	public void updateMesh()
 	{
 		MeshFilter mf = GetComponent<MeshFilter>();
+
 		mf.mesh.vertices = wl.getPoints ();
+        array = new Vector3[wl.getPoints().Length];
+        array = wl.getPoints();
 	}
+
+    //void drawWaveleteSphere()
+    //{
+
+
+    //    GameObject s;
+        
+    //    for (int i = 0; i < array.Length; i++)
+    //    {
+    //        s = GameObject.CreatePrimitive(PrimitiveType.Sphere);
+            
+    //        s.transform.localScale = new Vector3(0.2f, 0.2f, 0.2f);
+    //        s.transform.position = array[i];
+    //        s.transform.parent = transform;
+    //        editPoints.Add(s);
+            
+    //    }
+    //}
+
+    void OnDrawGizmos()
+    {
+        if (array != null)
+        {
+            int le = array.Length;
+            for (int i = 0; i < le; i++)
+            {
+                Gizmos.DrawSphere(array[i], 0.2f);
+            }
+        }
+    }
+
+    public void ImportMesh( Mesh m)
+    {
+        MeshFilter mf = GetComponent<MeshFilter>();
+        MeshCollider mc = GetComponent<MeshCollider>();
+
+        mf.mesh = m;
+        wl.setPoints(m.vertices);
+
+        array = new Vector3[m.vertices.Length];
+        array = m.vertices;
+
+    }
+
+    public Vector3[] GetArray()
+    {
+        return array;
+    }
+
+    public void SetSelectedPoint(Vector3 point, int index)
+    {
+        SelectedPoint = point;
+        SelectedIndex = index;
+    }
+
+    void updateArray()
+    {
+        array = new Vector3[wl.getPoints().Length];
+        array = wl.getPoints();
+    }
 }
